@@ -1,0 +1,23 @@
+#!name=龙湖签到模块示例
+#!desc=龙湖APP自动签到功能模块，包含获取Cookie和定时任务
+#!system=ios
+
+[MITM]
+hostname = %APPEND% *.longhu.net
+
+[Script]
+# 获取Cookie脚本
+龙湖签到Cookie = type=http-response,pattern=^https:\/\/.*\.longhu\.net\/.*\/token,requires-body=1,max-size=0,script-path=https://raw.githubusercontent.com/example/longhu-checkin.js
+
+# 定时签到脚本
+龙湖自动签到 = type=cron,cronexp="0 9 * * *",wake-system=1,script-path=https://raw.githubusercontent.com/example/longhu-checkin.js
+
+[Header Rewrite]
+# 修改请求头示例
+^https?://api\.longhu\.net header-add User-Agent "LongFor/1.0"
+
+# 模块使用说明
+# 1. 安装模块后打开龙湖APP并登录
+# 2. 脚本会自动获取并保存认证信息
+# 3. 每天早上9点自动执行签到
+# 4. 签到结果会通过通知推送 
