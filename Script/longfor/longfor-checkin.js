@@ -30,7 +30,7 @@ if (lk.isRequest()) {
 
 // 执行签到的函数
 function doSignIn() {
-  lk.log(`开始执行签到，使用token: ${longForToken}`)
+  lk.appendNotifyInfo(`开始执行签到，使用token: ${longForToken}`)
   
   const url = "https://gw2c-hw-open.longfor.com/lmarketing-task-api-mvc-prod/openapi/task/v1/signature/clock"
   const headers = {
