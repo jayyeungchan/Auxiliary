@@ -12,10 +12,6 @@ hostname = %APPEND% gw2c-hw-open.longfor.com
 # 定时签到脚本
 龙湖自动签到 = type=cron,cronexp="0 9 * * *",wake-system=1,script-path=https://raw.githubusercontent.com/devkityeung/Auxiliary/main/Script/longfor/longfor-checkin.js
 
-[Header Rewrite]
-# 修改请求头示例
-^https?://gw2c-hw-open\.longfor\.com header-add User-Agent "com.longfor.supera/1.14.0 iOS/18.5"
-
 # 模块使用说明
 # 1. 安装模块后打开龙湖APP并登录
 # 2. 脚本会自动获取并保存认证信息
