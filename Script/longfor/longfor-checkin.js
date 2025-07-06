@@ -30,7 +30,7 @@ if (lk.isRequest()) {
 // 获取token的函数
 function getToken() {
   if (lk.isMatch(/\/supera\/member\/api\/bff\/pages\/v1_14_0\/v1\/user-info/)) {
-    lk.log(`开始获取token`)
+    lk.appendNotifyInfo(`开始获取token`)
     let headers = $request.headers
     // 兼容不同大小写情况
     let token = headers["lmToken"] || headers["lmtoken"] || headers["LMTOKEN"] || ""
