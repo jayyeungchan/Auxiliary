@@ -7,13 +7,14 @@ hostname = %APPEND% gw2c-hw-open.longfor.com
 
 [Script]
 # 获取Token脚本
-龙湖签到Token = type=http-response,pattern=^https:\/\/gw2c-hw-open\.longfor\.com\/supera\/member\/api\/bff\/pages\/v1_14_0\/v1\/user-info,requires-body=1,max-size=0,script-path=https://raw.githubusercontent.com/devkityeung/Auxiliary/main/Script/longfor/longfor-checkin.js
+龙湖签到Token = type=http-response,pattern=^https:\/\/gw2c-hw-open\.longfor\.com\/supera\/member\/api\/bff\/pages\/v1_14_0\/v1\/user-info,requires-body=1,max-size=0,script-path=https://raw.githubusercontent.com/devkityeung/Auxiliary/main/Script/longfor/longfor-checkin.js?_=${timestamp}
 
 # 定时签到脚本
-龙湖自动签到 = type=cron,cronexp="0 9 * * *",wake-system=1,script-path=https://raw.githubusercontent.com/devkityeung/Auxiliary/main/Script/longfor/longfor-checkin.js
+龙湖自动签到 = type=cron,cronexp="0 9 * * *",wake-system=1,script-path=https://raw.githubusercontent.com/devkityeung/Auxiliary/main/Script/longfor/longfor-checkin.js?_=${timestamp}
 
 # 模块使用说明
 # 1. 安装模块后打开龙湖APP并登录
 # 2. 脚本会自动获取并保存认证信息
 # 3. 每天早上9点自动执行签到
-# 4. 签到结果会通过通知推送 
+# 4. 签到结果会通过通知推送
+# 5. 使用了时间戳参数避免缓存问题 
