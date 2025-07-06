@@ -6,8 +6,8 @@
 hostname = %APPEND% gw2c-hw-open.longfor.com
 
 [Script]
-# 获取Cookie脚本
-龙湖签到Cookie = type=http-response,pattern=^https:\/\/gw2c-hw-open\.longfor\.com\/supera\/member\/api\/bff\/pages\/v1_14_0\/v1\/user-info,requires-body=1,max-size=0,script-path=https://raw.githubusercontent.com/devkityeung/Auxiliary/main/Script/longfor/longfor-checkin.js
+# 获取Token脚本
+龙湖签到Token = type=http-response,pattern=^https:\/\/gw2c-hw-open\.longfor\.com\/supera\/member\/api\/bff\/pages\/v1_14_0\/v1\/user-info,requires-body=1,max-size=0,script-path=https://raw.githubusercontent.com/devkityeung/Auxiliary/main/Script/longfor/longfor-checkin.js
 
 # 定时签到脚本
 龙湖自动签到 = type=cron,cronexp="0 9 * * *",wake-system=1,script-path=https://raw.githubusercontent.com/devkityeung/Auxiliary/main/Script/longfor/longfor-checkin.js
