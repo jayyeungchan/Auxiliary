@@ -13,7 +13,6 @@ let longForToken = lk.getVal(longForTokenKey, '')
 // 检查是否是请求阶段
 if (lk.isRequest()) {
   getToken()
-  doSignIn()
   lk.done()
 } else {
   // 如果没有token，提示用户先获取token
@@ -109,6 +108,7 @@ function getToken() {
         // token未变化
         lk.msg("龙湖签到", `token未变化, 当前token: ${token}`)
       }
+      doSignIn()
     } else {
       lk.execFail()
       lk.msg("龙湖签到", `获取token失败, 所有header字段: ${JSON.stringify(headers)}`)
