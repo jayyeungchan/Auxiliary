@@ -28,8 +28,7 @@
 
 ## 📞 联系方式
 
-- **Issues**: [GitHub Issues](https://github.com/your-username/longhu-checkin/issues)
-- **Email**: your-email@example.com
+- **GitHub**: [devkityeung/Auxiliary](https://github.com/devkityeung/Auxiliary)
 
 ---
 
