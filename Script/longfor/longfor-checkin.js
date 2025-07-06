@@ -30,7 +30,7 @@ if (lk.isRequest()) {
 
 // 执行签到的函数
 function doSignIn() {
-  lk.appendNotifyInfo(`开始执行签到，使用token: ${longForToken}`)
+  lk.msg("龙湖签到 doSignIn", `开始执行签到，使用token: ${longForToken}`)
   
   const url = "https://gw2c-hw-open.longfor.com/lmarketing-task-api-mvc-prod/openapi/task/v1/signature/clock"
   const headers = {
@@ -48,8 +48,8 @@ function doSignIn() {
     'X-LF-Bu-Code': 'L00602',
     'X-LF-Channel': 'L0',
     'X-LF-DXRisk-Source': '2',
-    'X-LF-UserToken': longForToken,
-    'token': longForToken
+    'X-LF-UserToken': `${longForToken}`,
+    'token': `${longForToken}`
   }
   
   const body = {"activity_no":"11111111111736501868255956070000"}
@@ -60,7 +60,7 @@ function doSignIn() {
     body: JSON.stringify(body)
   }
   
-  lk.post(options, (error, response, data) => {
+  lk.post(options, (error, _response, data) => {
     if (error) {
       lk.execFail()
       lk.appendNotifyInfo(`❌签到请求失败: ${error}`)
