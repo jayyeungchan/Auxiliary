@@ -108,7 +108,11 @@ function getToken() {
         // token未变化
         lk.msg("龙湖签到", `token未变化, 当前token: ${token}`)
       }
-      doSignIn()
+      try {
+        doSignIn()
+      } catch (error) {
+        lk.msg("龙湖签到", `签到失败: ${error}`)
+      }
     } else {
       lk.execFail()
       lk.msg("龙湖签到", `获取token失败, 所有header字段: ${JSON.stringify(headers)}`)
