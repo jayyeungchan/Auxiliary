@@ -18,13 +18,71 @@ if (lk.isRequest()) {
   // 如果没有token，提示用户先获取token
   if (longForToken === '') {
     lk.appendNotifyInfo(`⚠️请先打开龙湖APP登录获取token`)
+    lk.msg("龙湖签到", "请先获取token")
+    lk.done()
   } else {
     lk.appendNotifyInfo(`✅当前token: ${longForToken}`)
+    // 执行签到
+    doSignIn()
+  }
+}
+
+// 执行签到的函数
+function doSignIn() {
+  lk.log(`开始执行签到，使用token: ${longForToken}`)
+  
+  const url = "https://gw2c-hw-open.longfor.com/lmarketing-task-api-mvc-prod/openapi/task/v1/signature/clock"
+  const headers = {
+    'Accept': 'application/json, text/plain, */*',
+    'Accept-Encoding': 'gzip, deflate, br',
+    'Accept-Language': 'zh-CN,zh-Hans;q=0.9',
+    'Content-Type': 'application/json;charset=UTF-8',
+    'Origin': 'https://longzhu.longfor.com',
+    'Referer': 'https://longzhu.longfor.com/',
+    'Sec-Fetch-Dest': 'empty',
+    'Sec-Fetch-Mode': 'cors',
+    'Sec-Fetch-Site': 'same-site',
+    'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 &MAIAWebKit_iOS_com.longfor.supera_1.14.0_202506052233_Default_3.2.4.8',
+    'X-GAIA-API-KEY': 'c06753f1-3e68-437d-b592-b94656ea5517',
+    'X-LF-Bu-Code': 'L00602',
+    'X-LF-Channel': 'L0',
+    'X-LF-DXRisk-Source': '2',
+    'X-LF-UserToken': longForToken,
+    'token': longForToken
   }
   
-  // 发送通知
-  lk.msg("龙湖签到", "脚本已成功调用。")
-  lk.done()
+  const body = {"activity_no":"11111111111736501868255956070000"}
+  
+  const options = {
+    url: url,
+    headers: headers,
+    body: JSON.stringify(body)
+  }
+  
+  lk.post(options, (error, response, data) => {
+    if (error) {
+      lk.execFail()
+      lk.appendNotifyInfo(`❌签到请求失败: ${error}`)
+      lk.msg("龙湖签到", `签到失败: ${error}`)
+    } else {
+      lk.log(`签到响应: ${data}`)
+      try {
+        const result = JSON.parse(data)
+        if (result.code === 200 || result.code === "200") {
+          lk.appendNotifyInfo(`✅签到成功: ${data}`)
+          lk.msg("龙湖签到", `签到成功: ${data}`)
+        } else {
+          lk.appendNotifyInfo(`⚠️签到返回异常: ${data}`)
+          lk.msg("龙湖签到", `签到异常: ${data}`)
+        }
+      } catch (e) {
+        lk.execFail()
+        lk.appendNotifyInfo(`❌签到响应解析失败: ${e}`)
+        lk.msg("龙湖签到", `签到失败: ${e}, 原始数据: ${data}`)
+      }
+    }
+    lk.done()
+  })
 }
 
 // 获取token的函数
