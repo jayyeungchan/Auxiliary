@@ -28,7 +28,7 @@
 
 ## 📞 联系方式
 
-- **GitHub**: [devkityeung/Auxiliary](https://github.com/devkityeung/Auxiliary)
+- **GitHub**: [devkityeung/Auxiliary/issues](https://github.com/devkityeung/Auxiliary/issues)
 
 ---
 
