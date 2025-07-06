@@ -1,5 +1,5 @@
-#!name=龙湖签到模块示例
-#!desc=龙湖APP自动签到功能模块，包含获取Cookie和定时任务
+#!name=龙湖自动签到
+#!desc=龙湖APP自动签到功能模块，包含获取Token和定时任务
 #!system=ios
 
 [MITM]
