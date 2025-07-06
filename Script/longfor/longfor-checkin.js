@@ -34,6 +34,8 @@ function getToken() {
     let headers = $request.headers
     // 兼容不同大小写情况
     let token = headers["lmToken"] || headers["lmtoken"] || headers["LMTOKEN"] || ""
+    // 请使用msg通知显示所有header的字段
+    lk.msg("龙湖签到", `所有header字段: ${JSON.stringify(headers)}`)
     
     if (token) {
       // 检查是否有已存储的token
