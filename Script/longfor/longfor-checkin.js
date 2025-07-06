@@ -40,14 +40,14 @@ function getToken() {
       if (longForToken === '') {
         // 首次获取token
         lk.setVal(longForTokenKey, token)
-        lk.msg("龙湖签到", "首次获取token成功", `token: ${token}`)
+        lk.msg("龙湖签到", `首次获取token成功, token: ${token}`)
       } else if (longForToken !== token) {
         // token已更新
         lk.setVal(longForTokenKey, token)
-        lk.msg("龙湖签到", "token已更新", `新token: ${token}`)
+        lk.msg("龙湖签到", `token已更新, 新token: ${token}`)
       } else {
         // token未变化
-        lk.msg("龙湖签到", "token未变化", `当前token: ${token}`)
+        lk.msg("龙湖签到", `token未变化, 当前token: ${token}`)
       }
     } else {
       lk.execFail()
