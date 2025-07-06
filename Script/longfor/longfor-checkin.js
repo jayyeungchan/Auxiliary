@@ -57,7 +57,7 @@ function doSignIn() {
   const options = {
     url: url,
     headers: headers,
-    body: JSON.stringify(body)
+    body: body.s()
   }
   
   lk.post(options, (error, _response, data) => {
@@ -68,7 +68,7 @@ function doSignIn() {
     } else {
       lk.log(`签到响应: ${data}`)
       try {
-        const result = JSON.parse(data)
+        const result = data.o()
         if (result.code === 200 || result.code === "200") {
           lk.appendNotifyInfo(`✅签到成功: ${data}`)
           lk.msg("龙湖签到", `签到成功: ${data}`)
