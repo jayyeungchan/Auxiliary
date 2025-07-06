@@ -19,7 +19,6 @@
 
 - ✅ **自动签到** - 每日定时自动签到获取积分
 - 🔄 **Token自动获取与更新** - 智能维护登录状态
-- 🛡️ **防重复签到** - 避免重复操作被检测
 - 📱 **多平台支持** - 支持Surge、Shadowrocket(小火箭)等
 - 🔔 **通知推送** - 支持多种通知方式
 
@@ -36,7 +35,7 @@
 
 1. **下载模块文件**
    ```
-   https://raw.githubusercontent.com/devkityeung/Auxiliary/main/Script/longfor/longfor-checkin.sgmodule?_=${timestamp}
+   https://raw.githubusercontent.com/devkityeung/Auxiliary/main/Script/longfor/longfor-checkin.sgmodule
    ```
 
 2. **导入到代理工具**
@@ -44,7 +43,7 @@
    - Shadowrocket(小火箭): 配置 → 模块 → 添加模块
 
 3. **获取Token**
-   - 安装模块后打开龙湖APP
+   - 安装模块后打开龙湖APP,登录APP并切到“我的”页面
    - 脚本会自动获取并保存lmToken
    - 查看通知确认Token获取成功
 
@@ -56,7 +55,7 @@
 
 ```ini
 [Script]
-# 获取Token脚本
+# 获取Token脚本，获取成功后可以注释
 龙湖签到Token = type=http-response,pattern=^https:\/\/gw2c-hw-open\.longfor\.com\/supera\/member\/api\/bff\/pages\/v1_14_0\/v1\/user-info,requires-body=1,max-size=0,script-path=https://raw.githubusercontent.com/devkityeung/Auxiliary/main/Script/longfor/longfor-checkin.js?_=${timestamp}
 
 # 定时签到脚本
@@ -83,10 +82,10 @@ hostname = %APPEND% gw2c-hw-open.longfor.com
 
 ### 首次使用
 
-1. **安装模块**后，打开龙湖APP
+1. **安装模块**后，打开龙湖APP,登录APP并切到“我的”页面
 2. **浏览任意页面**，脚本会自动获取lmToken
 3. **查看通知**确认Token获取成功
-4. **等待自动签到**或手动执行测试
+4. **等待自动签到**
 
 ### 日常使用
 
@@ -150,14 +149,3 @@ hostname = %APPEND% gw2c-hw-open.longfor.com
 ⭐ 如果这个项目对你有帮助，请给个Star支持一下！
 
 **再次声明：本项目仅供学习交流使用，请遵守相关法律法规，不得用于商业用途！**
-# 🏢 龙湖app自动签到脚本
-
-[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
-[![Platform](https://img.shields.io/badge/platform-iOS%20%7C%20Android-lightgrey.svg)]()
-[![Script](https://img.shields.io/badge/script-JavaScript-yellow.svg)]()
-
-> 🎯 一个用于龙湖app自动签到的脚本，支持Surge、Shadowrocket(小火箭)等代理工具平台
-
-## ⚠️ 免责声明
-
-**本项目仅供学习交流使用，请勿用于商业或非法用途！**
