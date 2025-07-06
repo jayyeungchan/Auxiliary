@@ -53,12 +53,10 @@ function doSignIn() {
     'token': `${longForToken}`
   }
   
-  const body = {"activity_no":"11111111111736501868255956070000"}
-  
-  const options = {
+  let options = {
     url: url,
     headers: headers,
-    body: body.s()
+    body: {"activity_no":"11111111111736501868255956070000"}.s()
   }
   
   // lk.post(options, (error, _response, data) => {
