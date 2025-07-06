@@ -60,30 +60,30 @@ function doSignIn() {
     body: body.s()
   }
   
-  lk.post(options, (error, _response, data) => {
-    if (error) {
-      lk.execFail()
-      lk.appendNotifyInfo(`❌签到请求失败: ${error}`)
-      lk.msg("龙湖签到", `签到失败: ${error}`)
-    } else {
-      lk.log(`签到响应: ${data}`)
-      try {
-        const result = data.o()
-        if (result.code === 200 || result.code === "200") {
-          lk.appendNotifyInfo(`✅签到成功: ${data}`)
-          lk.msg("龙湖签到", `签到成功: ${data}`)
-        } else {
-          lk.appendNotifyInfo(`⚠️签到返回异常: ${data}`)
-          lk.msg("龙湖签到", `签到异常: ${data}`)
-        }
-      } catch (e) {
-        lk.execFail()
-        lk.appendNotifyInfo(`❌签到响应解析失败: ${e}`)
-        lk.msg("龙湖签到", `签到失败: ${e}, 原始数据: ${data}`)
-      }
-    }
-    lk.done()
-  })
+  // lk.post(options, (error, _response, data) => {
+  //   if (error) {
+  //     lk.execFail()
+  //     lk.appendNotifyInfo(`❌签到请求失败: ${error}`)
+  //     lk.msg("龙湖签到", `签到失败: ${error}`)
+  //   } else {
+  //     lk.log(`签到响应: ${data}`)
+  //     try {
+  //       const result = data.o()
+  //       if (result.code === 200 || result.code === "200") {
+  //         lk.appendNotifyInfo(`✅签到成功: ${data}`)
+  //         lk.msg("龙湖签到", `签到成功: ${data}`)
+  //       } else {
+  //         lk.appendNotifyInfo(`⚠️签到返回异常: ${data}`)
+  //         lk.msg("龙湖签到", `签到异常: ${data}`)
+  //       }
+  //     } catch (e) {
+  //       lk.execFail()
+  //       lk.appendNotifyInfo(`❌签到响应解析失败: ${e}`)
+  //       lk.msg("龙湖签到", `签到失败: ${e}, 原始数据: ${data}`)
+  //     }
+  //   }
+  // })
+  lk.done()
 }
 
 // 获取token的函数
