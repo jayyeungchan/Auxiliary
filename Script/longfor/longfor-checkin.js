@@ -6,11 +6,55 @@
  */
 
 const lk = new ToolKit(`龙湖签到`, `LongForCheckIn`, {"httpApi": "ffff@10.0.0.19:6166"})
-lk.appendNotifyInfo(`⚠️请先打开龙湖APP登录获取refresh_token`)
+// 定义token的存储键名
+const longForTokenKey = 'lkLongForTokenKey'
+let longForToken = lk.getVal(longForTokenKey, '')
 
-// A simple notification to confirm the script is running
-lk.msg("龙湖签到", "脚本已成功调用。");
-lk.done();
+// 检查是否是请求阶段
+if (lk.isRequest()) {
+  getToken()
+  lk.done()
+} else {
+  // 如果没有token，提示用户先获取token
+  if (longForToken === '') {
+    lk.appendNotifyInfo(`⚠️请先打开龙湖APP登录获取token`)
+  } else {
+    lk.appendNotifyInfo(`✅当前token: ${longForToken}`)
+  }
+  
+  // 发送通知
+  lk.msg("龙湖签到", "脚本已成功调用。")
+  lk.done()
+}
+
+// 获取token的函数
+function getToken() {
+  if (lk.isMatch(/\/supera\/member\/api\/bff\/pages\/v1_14_0\/v1\/user-info/)) {
+    lk.log(`开始获取token`)
+    let headers = $request.headers
+    // 兼容不同大小写情况
+    let token = headers["lmToken"] || headers["lmtoken"] || headers["LMTOKEN"] || ""
+    
+    if (token) {
+      // 检查是否有已存储的token
+      if (longForToken === '') {
+        // 首次获取token
+        lk.setVal(longForTokenKey, token)
+        lk.msg("龙湖签到", "首次获取token成功", `token: ${token}`)
+      } else if (longForToken !== token) {
+        // token已更新
+        lk.setVal(longForTokenKey, token)
+        lk.msg("龙湖签到", "token已更新", `新token: ${token}`)
+      } else {
+        // token未变化
+        lk.msg("龙湖签到", "token未变化", `当前token: ${token}`)
+      }
+    } else {
+      lk.execFail()
+      lk.msg("龙湖签到", "获取token失败", "请检查请求header中是否包含lmToken")
+    }
+  }
+}
 
 // * ToolKit v1.4.1 build 164
 function ToolKit(scriptName,scriptId,options){class Request{constructor(tk){this.tk=tk}fetch(options,method="GET"){options=typeof options=="string"?{url:options}:options;let fetcher;switch(method){case"PUT":fetcher=this.put;break;case"POST":fetcher=this.post;break;default:fetcher=this.get}const doFetch=new Promise((resolve,reject)=>{fetcher.call(this,options,(error,resp,data)=>error?reject({error,resp,data}):resolve({error,resp,data}))}),delayFetch=(promise,timeout=5e3)=>Promise.race([promise,new Promise((_,reject)=>setTimeout(()=>reject(new Error("请求超时")),timeout))]);return options.timeout>0?delayFetch(doFetch,options.timeout):doFetch}async get(options){return this.fetch.call(this.tk,options)}async post(options){return this.fetch.call(this.tk,options,"POST")}async put(options){return this.fetch.call(this.tk,options,"PUT")}}return new class{constructor(scriptName,scriptId,options){Object.prototype.s=function(replacer,space){return typeof this=="string"?this:JSON.stringify(this,replacer,space)},Object.prototype.o=function(reviver){return JSON.parse(this,reviver)},Object.prototype.getIgnoreCase=function(key){if(!key)throw"Key required";let target=this;try{typeof this=="string"&&(target=JSON.stringify(this))}catch{throw"It's not a JSON object or string!"}const ret=Object.keys(target).reduce((obj,key)=>(obj[key.toLowerCase()]=target[key],obj),{});return ret[key]},this.userAgent=`Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.0.2 Safari/605.1.15`,this.a=`lk`,this.name=scriptName,this.id=scriptId,this.req=new Request(this),this.data=null,this.b=this.fb(`${this.a}${this.id}.dat`),this.c=this.fb(`${this.a}${this.id}.boxjs.json`),this.d=options,this.isExecComm=!1,this.f=this.getVal(`${this.a}IsEnableLog${this.id}`),this.f=!!this.isEmpty(this.f)||this.f.o(),this.g=this.getVal(`${this.a}NotifyOnlyFail${this.id}`),this.g=!this.isEmpty(this.g)&&this.g.o(),this.h=this.getVal(`${this.a}IsEnableTgNotify${this.id}`),this.h=!this.isEmpty(this.h)&&this.h.o(),this.i=this.getVal(`${this.a}TgNotifyUrl${this.id}`),this.h=this.h?!this.isEmpty(this.i):this.h,this.j=`${this.a}CostTotalString${this.id}`,this.k=this.getVal(this.j),this.k=this.isEmpty(this.k)?`0,0`:this.k.replace('"',""),this.l=this.k.split(",")[0],this.m=this.k.split(",")[1],this.n=0,this.o=`
