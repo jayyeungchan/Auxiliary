@@ -13,7 +13,6 @@ let longForToken = lk.getVal(longForTokenKey, '')
 // 检查是否是请求阶段
 if (lk.isRequest()) {
   getToken()
-  // doSignIn()
   lk.done()
 } else {
   // 如果没有token，提示用户先获取token
