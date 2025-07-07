@@ -1,7 +1,9 @@
 /**
  * 龙湖APP自动签到脚本 - Shadowrocket 简化版
- * 
- * 功能：自动完成龙湖APP每日签到，获取积分
+ *
+ * 功能：
+ * 1. 自动完成龙湖APP每日签到，获取积分
+ * 2. 自动完成抽奖活动签到和抽奖
  * 兼容：Shadowrocket, Surge, Quantumult X, Loon
  */
 
@@ -74,12 +76,132 @@ function done(value = {}) {
 }
 
 // 主要功能函数
+function doLotteryCheckIn() {
+    let token = getVal(TOKEN_KEY, '')
+    if (isEmpty(token)) {
+        notify("抽奖签到失败", "请先打开龙湖APP登录获取token")
+        log("抽奖签到失败: 没有找到token")
+        done()
+        return
+    }
+
+    log(`开始执行抽奖签到，使用token: ${token}`)
+
+    // 第一步：签到API
+    const signInUrl = "https://gw2c-hw-open.longfor.com/llt-gateway-prod/api/v1/activity/auth/lottery/sign"
+    const commonHeaders = {
+        'Accept': 'application/json, text/plain, */*',
+        'Accept-Encoding': 'gzip, deflate, br',
+        'Accept-Language': 'zh-CN,zh-Hans;q=0.9',
+        'Content-Type': 'application/json',
+        'Cookie': 'acw_tc=276aede117516477058858009e29e85ba7429dd0c2a1b3c6f8c5a55d36958a',
+        'Origin': 'https://llt.longfor.com',
+        'Referer': 'https://llt.longfor.com/',
+        'Sec-Fetch-Dest': 'empty',
+        'Sec-Fetch-Mode': 'cors',
+        'Sec-Fetch-Site': 'same-site',
+        'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 &MAIAWebKit_iOS_com.longfor.supera_1.14.0_202506052233_Default_3.2.4.8',
+        'X-LF-DXRisk-Source': '2',
+        'X-LF-DXRisk-Token': '686808d2zGtwOykELsEwuul5epDPUIFcSTYY0Xr1',
+        'authtoken': token,
+        'bucode': 'L00602',
+        'channel': 'L0',
+        'x-gaia-api-key': '2f9e3889-91d9-4684-8ff5-24d881438eaf'
+    }
+
+    const signInBody = {
+        "component_no": "CO15400F29R2ZFJZ",
+        "activity_no": "AP25K062Q6YYQ7FX"
+    }
+
+    let signInOptions = {
+        url: signInUrl,
+        headers: commonHeaders,
+        body: JSON.stringify(signInBody)
+    }
+
+    log("开始执行抽奖活动签到...")
+    httpPost(signInOptions, (error, response, data) => {
+        if (error) {
+            notify("抽奖签到失败", `签到请求失败: ${error}`)
+            log(`抽奖签到请求失败: ${error}`)
+            done()
+            return
+        }
+
+        log(`抽奖签到响应: ${data}`)
+        try {
+            const signInResult = JSON.parse(data)
+
+            if (signInResult.code === "0000") {
+                log("抽奖活动签到成功，开始执行抽奖...")
+                performLottery(commonHeaders, token)
+            } else if (signInResult.code === "863036") {
+                log("今日已签到，直接执行抽奖...")
+                performLottery(commonHeaders, token)
+            } else {
+                notify("抽奖签到异常", `签到返回码: ${signInResult.code}, 消息: ${signInResult.message || '未知错误'}`)
+                log(`抽奖签到返回异常: ${data}`)
+                done()
+            }
+        } catch (e) {
+            notify("抽奖签到失败", `签到响应解析失败: ${e}`)
+            log(`抽奖签到响应解析失败: ${e}, 原始数据: ${data}`)
+            done()
+        }
+    })
+}
+
+function performLottery(headers, token) {
+    const lotteryUrl = "https://gw2c-hw-open.longfor.com/llt-gateway-prod/api/v1/activity/auth/lottery/click"
+    const lotteryBody = {
+        "component_no": "CO15400F29R2ZFJZ",
+        "activity_no": "AP25K062Q6YYQ7FX",
+        "batch_no": ""
+    }
+
+    let lotteryOptions = {
+        url: lotteryUrl,
+        headers: headers,
+        body: JSON.stringify(lotteryBody)
+    }
+
+    log("开始执行抽奖...")
+    httpPost(lotteryOptions, (error, response, data) => {
+        if (error) {
+            notify("抽奖失败", `抽奖请求失败: ${error}`)
+            log(`抽奖请求失败: ${error}`)
+        } else {
+            log(`抽奖响应: ${data}`)
+            try {
+                const lotteryResult = JSON.parse(data)
+
+                if (lotteryResult.code === "0000") {
+                    const prize = lotteryResult.data?.prize_name || "未知奖品"
+                    notify("抽奖成功", `恭喜获得: ${prize}`)
+                    log(`抽奖成功，获得奖品: ${prize}`)
+                } else if (lotteryResult.code === "863033") {
+                    notify("抽奖提醒", "今日已抽奖，明天再来吧")
+                    log("今日已抽奖")
+                } else {
+                    notify("抽奖异常", `返回码: ${lotteryResult.code}, 消息: ${lotteryResult.message || '未知错误'}`)
+                    log(`抽奖返回异常: ${data}`)
+                }
+            } catch (e) {
+                notify("抽奖失败", `抽奖响应解析失败: ${e}`)
+                log(`抽奖响应解析失败: ${e}, 原始数据: ${data}`)
+            }
+        }
+        done()
+    })
+}
+
 function getToken() {
     if (isMatch(/\/supera\/member\/api\/bff\/pages\/v1_14_0\/v1\/user-info/)) {
         log('开始获取token')
         let headers = $request.headers
         let token = headers["lmToken"] || headers["lmtoken"] || headers["LMTOKEN"] || ""
-        
+
         if (token) {
             let currentToken = getVal(TOKEN_KEY, '')
             if (currentToken === '') {
@@ -100,12 +222,12 @@ function getToken() {
     }
 }
 
-function doSignIn() {
+function doSignIn(callback) {
     let token = getVal(TOKEN_KEY, '')
     if (isEmpty(token)) {
         notify("签到失败", "请先打开龙湖APP登录获取token")
         log("签到失败: 没有找到token")
-        done()
+        if (callback) callback()
         return
     }
 
@@ -160,7 +282,7 @@ function doSignIn() {
                 log(`签到响应解析失败: ${e}, 原始数据: ${data}`)
             }
         }
-        done()
+        if (callback) callback()
     })
 }
 
@@ -170,14 +292,21 @@ if (isRequest()) {
     getToken()
     done()
 } else {
-    // 定时任务阶段：执行签到
+    // 定时任务阶段：执行签到和抽奖
     let token = getVal(TOKEN_KEY, '')
     if (isEmpty(token)) {
         notify("请先获取token", "请打开龙湖APP登录")
         log("请先打开龙湖APP登录获取token")
         done()
     } else {
-        log(`开始执行签到，使用token: ${token}`)
-        doSignIn()
+        log(`开始执行签到和抽奖，使用token: ${token}`)
+
+        // 先执行常规签到，完成后执行抽奖签到
+        doSignIn(() => {
+            log("常规签到完成，开始执行抽奖签到...")
+            setTimeout(() => {
+                doLotteryCheckIn()
+            }, 1000) // 延迟1秒避免请求冲突
+        })
     }
 }
