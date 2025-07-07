@@ -12,9 +12,9 @@ let longForToken = lk.getVal(longForTokenKey, '')
 
 // 检查是否是请求阶段
 if (lk.isRequest()) {
-  // getToken()
-  doSignIn()
-  // lk.done()
+  getToken()
+  // doSignIn()
+  lk.done()
 } else {
   // 如果没有token，提示用户先获取token
   if (longForToken === '') {
@@ -24,7 +24,7 @@ if (lk.isRequest()) {
   } else {
     lk.appendNotifyInfo(`✅当前token: ${longForToken}`)
     // 执行签到
-    // doSignIn()
+    doSignIn()
     lk.done()
   }
 }
@@ -49,8 +49,8 @@ function doSignIn() {
     'X-LF-Bu-Code': 'L00602',
     'X-LF-Channel': 'L0',
     'X-LF-DXRisk-Source': '2',
-    'X-LF-UserToken': `${longForToken}`,
-    'token': `${longForToken}`
+    'X-LF-UserToken': longForToken,
+    'token': longForToken
   }
   
   let options = {
