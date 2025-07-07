@@ -11,6 +11,10 @@ const TOKEN_KEY = 'longfor_token'
 // 工具函数
 function log(message) {
     console.log(`\n██ ${message}`)
+    // 在 Shadowrocket 中也通过通知显示重要日志
+    if (message.includes('开始') || message.includes('成功') || message.includes('失败') || message.includes('错误')) {
+        notify("调试信息", message)
+    }
 }
 
 function isEmpty(obj) {
