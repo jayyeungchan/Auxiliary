@@ -121,6 +121,7 @@ function doSignIn() {
         'Accept-Encoding': 'gzip, deflate, br',
         'Accept-Language': 'zh-CN,zh-Hans;q=0.9',
         'Content-Type': 'application/json;charset=UTF-8',
+        'Cookie': 'acw_tc=ac11000117515948134458251e007763cde29cc35ff7b19c704ac2843e03fa',
         'Origin': 'https://longzhu.longfor.com',
         'Referer': 'https://longzhu.longfor.com/',
         'Sec-Fetch-Dest': 'empty',
@@ -130,7 +131,9 @@ function doSignIn() {
         'X-GAIA-API-KEY': 'c06753f1-3e68-437d-b592-b94656ea5517',
         'X-LF-Bu-Code': 'L00602',
         'X-LF-Channel': 'L0',
+        'X-LF-DXRisk-Captcha-Token': 'undefined',
         'X-LF-DXRisk-Source': '2',
+        'X-LF-DXRisk-Token': '68673780TZSEnm6nueRfRAziVGwXc5NyaH5z5vo1',
         'X-LF-UserToken': token,
         'token': token
     }
@@ -150,7 +153,7 @@ function doSignIn() {
             try {
                 const result = JSON.parse(data)
                 notify("签到响应", `签到响应完成: ${JSON.stringify(result)}`)
-                if (result.code === 200 || result.code === "200") {
+                if (result.code === 200 || result.code === "0000") {
                     notify("签到成功", `签到完成: ${result.message || '获得积分'}`)
                     log(`签到成功: ${data}`)
                 } else {
