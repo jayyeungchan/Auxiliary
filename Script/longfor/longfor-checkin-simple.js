@@ -149,6 +149,7 @@ function doSignIn() {
             log(`签到响应: ${data}`)
             try {
                 const result = JSON.parse(data)
+                notify("签到响应", `签到响应完成: ${JSON.stringify(result)}`)
                 if (result.code === 200 || result.code === "200") {
                     notify("签到成功", `签到完成: ${result.message || '获得积分'}`)
                     log(`签到成功: ${data}`)
