@@ -22,10 +22,9 @@ if (lk.isRequest()) {
     lk.msg("龙湖签到", "请先获取token")
     lk.done()
   } else {
-    lk.appendNotifyInfo(`✅当前token: ${longForToken}`)
+    lk.msg(`✅当前token: ${longForToken}`)
     // 执行签到
     doSignIn()
-    lk.done()
   }
 }
 
@@ -33,32 +32,32 @@ if (lk.isRequest()) {
 function doSignIn() {
   lk.msg("龙湖签到 doSignIn", `开始执行签到，使用token: ${longForToken}`)
   
-  const url = "https://gw2c-hw-open.longfor.com/lmarketing-task-api-mvc-prod/openapi/task/v1/signature/clock"
-  const headers = {
-    'Accept': 'application/json, text/plain, */*',
-    'Accept-Encoding': 'gzip, deflate, br',
-    'Accept-Language': 'zh-CN,zh-Hans;q=0.9',
-    'Content-Type': 'application/json;charset=UTF-8',
-    'Origin': 'https://longzhu.longfor.com',
-    'Referer': 'https://longzhu.longfor.com/',
-    'Sec-Fetch-Dest': 'empty',
-    'Sec-Fetch-Mode': 'cors',
-    'Sec-Fetch-Site': 'same-site',
-    'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 &MAIAWebKit_iOS_com.longfor.supera_1.14.0_202506052233_Default_3.2.4.8',
-    'X-GAIA-API-KEY': 'c06753f1-3e68-437d-b592-b94656ea5517',
-    'X-LF-Bu-Code': 'L00602',
-    'X-LF-Channel': 'L0',
-    'X-LF-DXRisk-Source': '2',
-    'X-LF-UserToken': longForToken,
-    'token': longForToken
-  }
-  
-  let options = {
-    url: url,
-    headers: headers,
-    body: {"activity_no":"11111111111736501868255956070000"}.s()
-  }
-  
+  // const url = "https://gw2c-hw-open.longfor.com/lmarketing-task-api-mvc-prod/openapi/task/v1/signature/clock"
+  // const headers = {
+  //   'Accept': 'application/json, text/plain, */*',
+  //   'Accept-Encoding': 'gzip, deflate, br',
+  //   'Accept-Language': 'zh-CN,zh-Hans;q=0.9',
+  //   'Content-Type': 'application/json;charset=UTF-8',
+  //   'Origin': 'https://longzhu.longfor.com',
+  //   'Referer': 'https://longzhu.longfor.com/',
+  //   'Sec-Fetch-Dest': 'empty',
+  //   'Sec-Fetch-Mode': 'cors',
+  //   'Sec-Fetch-Site': 'same-site',
+  //   'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 &MAIAWebKit_iOS_com.longfor.supera_1.14.0_202506052233_Default_3.2.4.8',
+  //   'X-GAIA-API-KEY': 'c06753f1-3e68-437d-b592-b94656ea5517',
+  //   'X-LF-Bu-Code': 'L00602',
+  //   'X-LF-Channel': 'L0',
+  //   'X-LF-DXRisk-Source': '2',
+  //   'X-LF-UserToken': longForToken,
+  //   'token': longForToken
+  // }
+  //
+  // let options = {
+  //   url: url,
+  //   headers: headers,
+  //   body: {"activity_no":"11111111111736501868255956070000"}.s()
+  // }
+  //
   // lk.post(options, (error, _response, data) => {
   //   if (error) {
   //     lk.execFail()
@@ -82,6 +81,7 @@ function doSignIn() {
   //     }
   //   }
   // })
+
   lk.done()
 }
 
@@ -106,11 +106,6 @@ function getToken() {
       } else {
         // token未变化
         lk.msg("龙湖签到", `token未变化, 当前token: ${token}`)
-      }
-      try {
-        doSignIn()
-      } catch (error) {
-        lk.msg("龙湖签到", `签到失败: ${error}`)
       }
     } else {
       lk.execFail()
