@@ -8,7 +8,7 @@
 # 4. 脚本会自动执行签到和抽奖
 
 [MITM]
-hostname = gw2c-hw-open.longfor.com
+hostname = %APPEND% gw2c-hw-open.longfor.com
 
 [Script]
 # 获取Token脚本, 获取成功后可以注释
